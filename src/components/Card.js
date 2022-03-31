@@ -1,7 +1,9 @@
-import { getMouseEventOptions } from '@testing-library/user-event/dist/utils';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { addStorage, deleteStorage } from '../redux';
 
 const Card = ({ movie }) => {
+    const dispatch = useDispatch();
     const dateFormater = (date) => {
         let [yy, mm, dd] = date.split("-");
         let newDate = [dd, mm, yy].join('/');
@@ -74,7 +76,7 @@ const Card = ({ movie }) => {
             return genreArray.map((genre) => <li key={genre}>{genre}</li>);
         }
     }
-    const addStorage = () => {
+    /*const addStorage = () => {
         let storedData = window.localStorage.movies ? window.localStorage.movies.split(",") : [] ;
         console.log(storedData);
         if (!storedData.includes(movie.id.toString())) {
@@ -90,7 +92,7 @@ const Card = ({ movie }) => {
       let newData = storedData.filter((id) => id != movie.id);
       window.localStorage.movies = newData;
       window.location.reload();
-    }
+    }*/
 
     return (
         <div className="card">
@@ -108,9 +110,9 @@ const Card = ({ movie }) => {
              {movie.overview ? <h3>Synopsie</h3> : "" }
                  <p>{movie.overview}</p>
                  {movie.genre_ids ? (
-                    <div className="btn" onClick={() => addStorage()}>Ajouter aux coups de coeurs</div>
+                    <div className="btn" onClick={() => dispatch(addStorage(movie.id))}>Ajouter aux coups de coeurs</div>
                  ) : (
-                   <div className="btn" onClick={() => deleteStorage()}>Supprimer de la liste</div>
+                   <div className="btn" onClick={() => dispatch(deleteStorage(movie.id))}>Supprimer de la liste</div>
                  )}
         </div>
     );
